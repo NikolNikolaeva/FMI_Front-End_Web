@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <form>
+        <h1>Add employee</h1>
+        <fieldset>
+            <legend>Employee information</legend>
+            <fieldset>
+                <legend>Personal information</legend>
+                <div>
+                    <label for="First name">First name *:</label><br />
+                    <input id="First name" placeholder="First name" name="sdf" required /><br />
+                    <label for="Last name">Last name *:</label><br />
+                    <input id="Last name" placeholder="Last name" required /><br />
+
+                    <label for="Birth date">Birth date *:</label><br />
+                    <input type="date" id="Birth date" name="birthday" required><br />
+                    <label for="Courtesy">Title of Courtesy *:</label><br />
+                    <div>
+                        <input type="radio" id="huey" name="drone" value="dr" required>
+                        <label for="huey">Dr.</label>
+
+                        <input type="radio" id="dewey" name="drone" value="mr">
+                        <label for="dewey">Mr.</label>
+
+                        <input type="radio" id="louie" name="drone" value="mrs">
+                        <label for="louie">Mrs.</label>
+
+                        <input type="radio" id="loui" name="drone" value="ms">
+                        <label for="loui">Ms.</label>
+                    </div>
+
+
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>Contant information</legend>
+                <div>
+                    <label for="Address">Address *:</label><br />
+                    <input id="Address" placeholder="Address" required /><br />
+                    <label for="City">City *:</label><br />
+                    <input id="City" placeholder="City" required /><br />
+                    <label for="Region">Region *:</label><br />
+                    <input id="Region" placeholder="Region" required /><br />
+                    <label for="Postal code">Postal code *:</label><br />
+                    <input type="number" id="Postal code" name="code" placeholder="1000" min="1000" max="9999"
+                        required><br />
+                    <label for="Country">Country *:</label><br />
+                    <input id="Country" placeholder="Country" required /><br />
+                    <label for="phone">Mobile phone *:</label><br />
+                    <input type="tel" id="phone" name="phone" pattern="\+359\d{9}" required placeholder="+359888123456"
+                        required><br />
+                    <label for="email">Email *:</label><br />
+                    <input type="email" id="email" pattern=".+@globex\.com" size="30" placeholder="example@example.com"
+                        required>
+
+                </div>
+
+
+            </fieldset>
+
+        </fieldset>
+        <fieldset>
+            <legend>Job information</legend>
+            <div>
+                <label for="Job">Job title *:</label><br />
+                <input id="Job" placeholder="Job title" /><br />
+                <label for="Manager">Manager *:</label><br />
+                <select name="pets" id="pet-select">
+                    <option value="">--Please select manager--</option>
+                    <option value="dog">Gabi</option>
+                    <option value="cat">Vasi</option>
+                </select>
+                <br />
+                <label for="pass">Password* :</label><br />
+                <input type="password" id="pass" name="password" minlength="8" placeholder="Passsword" required><br />
+                <label for="repeat pass">Repeat Password* :</label><br />
+                <input type="password" id="repeat pass" name="password" minlength="8" placeholder="Repeat Passsword"
+                    required><br />
+
+            </div>
+
+
+        </fieldset>
+        <fieldset>
+            <legend>Additional information</legend>
+            <div>
+
+                <label for="note">Notes:</label><br />
+                <textarea id="story" name="story" rows="5" cols="33"> Some additional notes...
+                </textarea>
+
+            </div>
+
+
+        </fieldset>
+
+        <div>
+            <input type="checkbox" id="check" name="ckeck" required>
+            <label for="scales"> *Yes, I confirm.</label>
+        </div>
+
+        <button class="Add Employee">
+            Add employee
+        </button>
+    </form>
+
+</body>
+
+</html>
