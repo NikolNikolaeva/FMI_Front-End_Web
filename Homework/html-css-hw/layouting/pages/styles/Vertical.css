@@ -1,0 +1,47 @@
+* {
+    margin: 0px;
+    padding: 0;
+}
+
+div {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    height: 43px;
+    background-color: #020091;
+    margin-bottom: 14px;
+}
+
+footer {
+    width: 100%;
+    height: 43px;
+    background-color: #0900FF;
+    margin-top: 14px;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+#one{
+    display: flex;
+    background-color: #8D0085;
+    height: 487px;
+    margin-right: 14px;
+    flex:1;
+}
+
+#two{
+    display: flex;
+    background-color: #00D100;
+    flex: 2;
+    height: 487px;
+    margin-left: 14px;
+}

@@ -1,0 +1,46 @@
+* {
+    margin: 0px;
+    padding: 0;
+}
+
+div {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+}
+
+header {
+    width: 100%;
+    height: 82px;
+    background-color: #020091;
+    margin-bottom: 7px;
+}
+
+footer {
+    width: 100%;
+    height: 82px;
+    background-color: #0900FF;
+    margin-top: 7px;
+}
+
+.main {
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+
+#one {
+    display: flex;
+    background-color: #8D0085;
+    margin-right: 7px;
+    height: 415px;
+    flex: 1;
+}
+
+#two {
+    display: flex;
+    background-color: #00D100;
+    flex: 4;
+    margin-left: 7px;
+}
