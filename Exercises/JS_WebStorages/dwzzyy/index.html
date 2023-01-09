@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Front-end FMI</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <script type="module" src="src/index.js"></script>
+  </head>
+
+  <body>
+    <div class="column">
+      <form>
+        <div class="filters">
+          <div class="filter-item">
+            <div class="filter-item-text">Filter by region:</div>
+            <select>
+              <option>-- Select country --</option>
+              <option>Americas</option>
+              <option>Africa</option>
+              <option>Asia</option>
+              <option>Europe</option>
+              <option>Oceania</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <div class="filter-item-text">Filter by name:</div>
+            <input placeholder="Bulgaria" />
+          </div>
+          <div class="filter-spacer"></div>
+          <button class="filter-btn">Search</button>
+        </div>
+      </form>
+      <ul id="countryList" class="countries-list">
+        
+      </ul>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,57 @@
+<html>
+  <head>
+    <title>Front-end FMI</title>
+    <link rel="stylesheet" href="src/styles.css" />
+    <script type="module" src="src/detail.js"></script>
+  </head>
+
+  <body>
+    <div class="column">
+      <div class="detail-page-header">
+        <img
+          src="https://flagcdn.com/bg.svg"
+          class="detail-page-header-image"
+          alt=""
+        />
+        <div class="detail-page-header-title">Republic of Bulgaria</div>
+        <button id="closeBtn" onClick="javascript:clickinner(this);">Close</button>
+      </div>
+
+      <div class="detail-page-content-box">
+        <div>
+          <div class="detail-page-content-box-title">Country details</div>
+          <div class="detail-page-content-box-content">
+            Capital: Sofia <br />
+            Region: Europe <br />
+            Subregion: Eastern Europe <br />
+            Country area: 110879 km2 <br />
+            Borders: Greece, North Macedonia, Romania, Serbia, Turkey
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-page-content-box">
+        <div>
+          <div class="detail-page-content-box-title">Additional details</div>
+          <div class="detail-page-content-box-content">
+            Population: 6927288 <br />
+            Language: Bulgarian <br />
+            Timezone: UTC+02:00 <br />
+            Currency: Bulgarian lev (лв)
+          </div>
+        </div>
+      </div>
+
+      <div class="detail-page-content-box">
+        <div>
+          <div class="detail-page-content-box-title">Univesrty list</div>
+          <div class="detail-page-content-box-content">
+            <ul id="universities-list">
+              <li>Sofia University "St. Kliment Ohridski"</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

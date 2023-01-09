@@ -1,0 +1,144 @@
+:root {
+  --list-item-spacing: 0.5rem;
+  --list-border: 1px solid #000;
+  --margin: 1rem;
+  --image-width: 4rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-size: 16px;
+  font-family: sans-serif;
+  background-color: #e7e7e7;
+}
+
+.column-layout {
+  display: flex;
+  width: 100%;
+}
+
+.column {
+  border-right: var(--list-border);
+  border-right-width: 2px;
+  overflow: hidden;
+  transition: flex-basis 1s;
+  flex-basis: 100%;
+}
+
+.column:last-child {
+  border-right: 0;
+}
+
+.column:nth-child(1) {
+  flex-basis: 100%;
+}
+
+[two-column] .column:nth-of-type(1) {
+  flex-basis: 40%;
+}
+
+.column:nth-child(2) {
+  flex-basis: 0%;
+}
+
+[two-column] .column:nth-of-type(2) {
+  flex-basis: 60%;
+}
+
+.countries-list,
+.filters {
+  margin: var(--margin);
+  border: var(--list-border);
+}
+
+.filters {
+  box-sizing: border-box;
+  padding: var(--list-item-spacing);
+  display: flex;
+  align-items: center;
+}
+
+.filter-item {
+  margin-right: var(--list-item-spacing);
+}
+
+.filter-item-text {
+  margin-bottom: var(--list-item-spacing);
+}
+
+.filter-spacer {
+  min-width: 0;
+  flex-grow: 1;
+}
+
+.filter-btn {
+  justify-self: flex-end;
+}
+
+.country {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--list-item-spacing);
+  border-bottom: var(--list-border);
+}
+
+.country:last-child {
+  border-bottom: none;
+}
+
+.country-image,
+.detail-page-header-image {
+  width: var(--image-width);
+  margin-right: var(--list-item-spacing);
+}
+
+.country-title,
+.detail-page-header-title {
+  flex-grow: 1;
+  margin-right: var(--list-item-spacing);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: bold;
+}
+
+.country-btn {
+  flex-shrink: 0;
+}
+
+.detail-page-header {
+  margin: var(--margin);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: var(--list-item-spacing);
+  border: var(--list-border);
+}
+
+.detail-page-content-box {
+  margin: var(--margin);
+  box-sizing: border-box;
+  padding: 0 var(--list-item-spacing);
+  border: var(--list-border);
+}
+
+.detail-page-content-box-title {
+  box-sizing: border-box;
+  font-weight: bold;
+  padding: var(--list-item-spacing);
+  border-bottom: var(--list-border);
+}
+
+.detail-page-content-box-content {
+  box-sizing: border-box;
+  padding: var(--list-item-spacing);
+}
+
+.detail-page-content-box-content ul {
+  margin-left: var(--margin);
+}
