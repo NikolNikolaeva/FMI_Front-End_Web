@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MyDiary Homepage</title>
+    <link rel="website icon" type="png" href="/IMAGES/logo.png" />
+    <link rel="stylesheet" href="/STYLES/mainStyle.css" />
+    <script type="module" src="/JS/main.js"></script>
+  </head>
+
+  <body>
+    <nav class="navbar">
+      <div class="navbar_container">
+        <span id="navbar_logo">MyDiary</span>
+        <img src="/IMAGES/logo.png" alt="" id="logo" />
+      </div>
+      <div class="navbar_container">
+        <ul class="navbar_menu">
+          <li class="navbar_item">
+            <button class="button" id="calendarLogo" onclick="location.href = 'calendar.html';"></button>
+            <span id="cal">Schedule</span>
+          </li>
+          <li class="navbar_item">
+            <button class="button" id="friendsLogo"></button>
+            <span id="fr">Friends</span>
+          </li>
+          <li class="navbar_item">
+            <button class="button" id="settingsLogo"></button>
+            <span id="set">Settings</span>
+
+            <ul class="setMenu">
+              <li>
+                <a id="profile" href="/HTML/myProfile.html">My profile</a>
+              </li>
+              <li><a id="logOut" href="/HTML/index.html">Log out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <section class="section">
+      <div class="welcome">Nikol, welcome to your personal diary calendar!</div>
+      <div class="timeDiv">
+        <div class="time">
+          <h3>Now</h3>
+          <h1>CurrTime</h1>
+          <h2>Date</h2>
+        </div>
+        <div class="timeLine">Hello</div>
+      </div>
+    </section>
+  </body>
+</html>
