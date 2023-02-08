@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friends</title>
+    <link rel="website icon" type="png" href="/IMAGES/logo.png" />
+    <link rel="stylesheet" href="/STYLES/friendsStyle.css" />
+    <script type="module" src="/JS/friends.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+      integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <nav class="navbar">
+      <div class="navbar_container">
+        <span id="navbar_logo">MyDiary</span>
+        <img src="/IMAGES/logo.png" alt="" id="logo" />
+      </div>
+      <div class="navbar_container">
+        <ul class="navbar_menu">
+          <li class="navbar_item">
+            <button
+              class="button"
+              onclick="location.href = 'main.html';"
+              id="homepageLogo"
+            ></button>
+            <span id="main">Homepage</span>
+          </li>
+          <li class="navbar_item">
+            <button
+              class="button"
+              id="calendarLogo"
+              onclick="location.href = 'calendar.html';"
+            ></button>
+            <span id="cal">Schedule</span>
+          </li>
+          <li class="navbar_item">
+            <button class="button" id="settingsLogo"></button>
+            <span id="set">Settings</span>
+
+            <ul class="setMenu">
+              <li>
+                <a id="profile" href="/HTML/myProfile.html">My profile</a>
+              </li>
+              <li><a id="logOut" href="/HTML/index.html">Log out</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="bodyPage">
+      <aside class="friends">
+        <span id="nameListFriends">Friends</span>
+        <ul class="friendsList">
+          <li class="friend">👤 Nikol</li>
+          <li class="friend">👤 Leya</li>
+        </ul>
+        <button class="addFriendPlus">
+          <i class="fas fa-plus"></i>
+        </button>
+      </aside>
+
+      <section class="section">
+        <div class="add-friend-wrapper">
+          <div class="add-friend-header">
+            <div class="title">Add Friend</div>
+            <i class="fas fa-times close"></i>
+          </div>
+          <div class="add-friend-body">
+            <div class="add-friend-input">
+              <input
+                type="text"
+                placeholder="Friend Username Or Email"
+                class="friend-name"
+              />
+            </div>
+          </div>
+          <div class="add-friend-footer">
+            <button class="add-friend-btn">add friend</button>
+          </div>
+        </div>
+        <div class="inviteFriendwrapper">
+          <div class="title">Invite Friend To Event</div>
+          <br />
+          <div class="choosenFr">Choose friend from the list</div>
+          <div class="add-friend-body">
+            <div class="add-friend-input">
+              <input
+                type="text"
+                placeholder="Event Time From"
+                class="event-time-from"
+              />
+            </div>
+            <div class="add-friend-input">
+              <input
+                type="text"
+                placeholder="Event Time To"
+                class="event-time-to"
+              />
+            </div>
+            <div class="add-friend-input">
+              <input type="text" placeholder="dd/mm/yyyy" class="data-input" />
+            </div>
+          </div>
+          <div class="add-event-footer">
+            <button class="add-event-btn">send</button>
+          </div>
+        </div>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

@@ -19,11 +19,19 @@
       <div class="navbar_container">
         <ul class="navbar_menu">
           <li class="navbar_item">
-            <button class="button" id="calendarLogo" onclick="location.href = 'calendar.html';"></button>
+            <button
+              class="button"
+              id="calendarLogo"
+              onclick="location.href = 'calendar.html';"
+            ></button>
             <span id="cal">Schedule</span>
           </li>
           <li class="navbar_item">
-            <button class="button" id="friendsLogo"></button>
+            <button
+              class="button"
+              onclick="location.href = 'friends.html';"
+              id="friendsLogo"
+            ></button>
             <span id="fr">Friends</span>
           </li>
           <li class="navbar_item">
@@ -41,14 +49,51 @@
       </div>
     </nav>
     <section class="section">
-      <div class="welcome">Nikol, welcome to your personal diary calendar!</div>
+      <div class="welcome"></div>
       <div class="timeDiv">
         <div class="time">
           <h3>Now</h3>
           <h1>CurrTime</h1>
           <h2>Date</h2>
         </div>
-        <div class="timeLine">Hello</div>
+        <div class="pendingMeets">
+          <div id="containerMeets">
+            <span class="title">PENDING MEETINGS</span>
+            <ul class="listMeets">
+              <!--<h3 id="noMeets">No requested meets</h3>-->
+              <li class="meet">
+                <div class="bar">
+                  <div class="name">Meeting 1</div>
+                  <div class="listBtns">
+                    <button class="buttonList" id="accept">Accept</button>
+                    <button class="buttonList" id="decline">Decline</button>
+                  </div>
+                </div>
+                <div class="info">Lea</div>
+              </li>
+              <li class="meet">
+                <div class="bar">
+                  <div class="name">Meeting 2</div>
+                  <div class="listBtns">
+                    <button class="buttonList" id="accept">Accept</button>
+                    <button class="buttonList" id="decline">Decline</button>
+                  </div>
+                </div>
+                <div class="info">Vivi</div>
+              </li>
+              <li class="meet">
+                <div class="bar">
+                  <div class="name">Meeting 3</div>
+                  <div class="listBtns">
+                    <button class="buttonList" id="accept">Accept</button>
+                    <button class="buttonList" id="decline">Decline</button>
+                  </div>
+                </div>
+                <div class="info">nikol</div>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
   </body>

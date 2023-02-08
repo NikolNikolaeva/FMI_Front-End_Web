@@ -49,24 +49,26 @@
           required
         />
         <input
-          type="passwordConfirm"
+          type="password"
           id="passComf"
           name="passwordConf"
           placeholder="Repeat password"
-          minlength="8"
+          minlength="4"
           required
         />
         <button type="submit" class="button secondBtn">Make account</button>
-    </form action="" method="get">
+        <span id="success "></span>
+    </form>
   </div>
+  
   <div class="form-wrapper loginForm">
     <form>
       <h1 class="hello">Welcome to MyDiary!</h1>
       <span id="login">Log in</span>
-      <input id="username" placeholder="Username" name="username" required />
+      <input id="usernameLog" placeholder="Username" name="username" required />
       <input
         type="password"
-        id="pass"
+        id="passLog"
         name="password"
         placeholder="Password"
         minlength="8"
@@ -74,7 +76,7 @@
       />
        <span id="invalid">Invalid username or password!</span>
       <button type="submit" class="button secondBtn">Log in</button>
-  </form>
+      </form>
     </section>
   </body>
 </html>

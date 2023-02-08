@@ -153,6 +153,7 @@ input {
   border-color: var(--mainPinkColor--);
   padding: 0px 20px;
   outline-color: var(--lightPink--);
+  caret-color: var(--mainPinkColor--);
 }
 
 .secondBtn {
@@ -191,11 +192,6 @@ input {
   }
 }
 
-input[type="radio"] {
-  position: absolute;
-  left: -9999px;
-}
-
 .section.active .form-wrapper.signupForm {
   transform: scale(0) translate(50px, 0);
 }
@@ -215,4 +211,16 @@ input[type="radio"] {
   color: aliceblue;
   transition: 0.5s ease-in;
   margin-top: 0;
+}
+
+#success {
+  display: flex;
+  color: var(--mainBlue--);
+  font-style: italic;
+  margin: 0;
+  font-size: x-large;
+}
+
+.visible{
+  display: flex;
 }
