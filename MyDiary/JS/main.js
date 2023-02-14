@@ -1,13 +1,14 @@
 //--------------------------------------------
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
-import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
+import {
+  getDatabase,
+  ref,
+  set,
+  push,
+  onValue,
+  remove,
+} from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAho6taHOsZVzSGkvmx6OlGf2GwvF1beLo",
   authDomain: "mydiary-b9fd4.firebaseapp.com",
@@ -22,15 +23,66 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+var user = window.localStorage.user;
+const personPendingEvents = ref(database, "Users/" + user + "/PendingEvents/");
+let arrayUsersPendingEvents = [];
+
+onValue(
+  personPendingEvents,
+  (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const childKey = childSnapshot.key;
+      const childData = childSnapshot.val();
+      arrayUsersPendingEvents.push({
+        title: childKey,
+        from: childData.from,
+        to: childData.to,
+        day: childData.day,
+        month: childData.month,
+        year: childData.year,
+        info: childData.info,
+        fromPerson: childData.fromPerson,
+      });
+    });
+    pendingMeetingsBar();
+  },
+  {
+    onlyOnce: true,
+  }
+);
+
+//add event
+function addEvent(currevent) {
+  set(
+    ref(
+      database,
+      "Users/" +
+        user +
+        "/Events/" +
+        `${currevent.day} ${currevent.month} ${currevent.year} ${currevent.from}/`
+    ),
+    {
+      title: currevent.title,
+      to: currevent.to,
+      info: currevent.info,
+    }
+  );
+}
+
+//remove pending event
+
+function removeEvent(name) {
+  remove(ref(database, "Users/" + user + "/PendingEvents/" + name));
+}
 
 //-----------------------------------------------
 
 const settingsBtn = document.getElementById("settingsLogo");
 var flag = true;
 const setMenu = document.getElementsByClassName("setMenu")[0];
-const welcome=document.getElementsByClassName("welcome")[0];
+const welcome = document.getElementsByClassName("welcome")[0];
 
-welcome.innerHTML=`${window.localStorage.user}, welcome to your personal diary calendar!`;
+welcome.innerHTML = `${window.localStorage.user}, welcome to your personal diary calendar!`;
 
 settingsBtn.addEventListener("click", () => {
   if (flag === true) {
@@ -64,25 +116,62 @@ setInterval(() => {
 
 const listMeets = document.querySelector(".listMeets");
 
-if (listMeets.innerHTML === "") {
-  listMeets.innerHTML = `<h3 id="noMeets">No requested meets</h3>`;
-}
+listMeets.addEventListener("click", (event) => {
+  //listMeets.forEach((meet) => {
+  const meet = event.target.parentElement;
 
-function addListener() {
-  const meets = document.querySelectorAll(".meet");
-  meets.forEach((meet) => {
-    let bar=meet.getElementsByTagName("div")[0];
-    bar.addEventListener("click", () => {
-      let info = meet.getElementsByTagName("div")[3];
-      info.classList.add("visible")
-    
-      document.addEventListener("click", (e) => {
-        if (e.target !== bar) {
-          info.classList.remove("visible");
-        }
-      });
-    });
+  let accept = meet.children[1];
+  let decline = meet.children[2];
+  let name = meet.children[0];
+
+  const currevent = [];
+  arrayUsersPendingEvents.forEach((event) => {
+    if (
+      event.title ==
+      name.innerText.split(" ")[0] + " " + name.innerText.split(" ")[1]
+    ) {
+      currevent.push(event);
+    }
   });
+
+  if (accept) {
+    listMeets.removeChild(meet);
+    //pendingMeetingsBar();
+    addEvent(currevent[0]);
+    removeEvent(currevent[0].title);
+  }
+
+  if (decline) {
+    decline.addEventListener("click", () => {
+      removeEvent(currevent[0].title);
+    });
+  }
+  //});
+  pendingMeetingsBar();
+});
+
+function pendingMeetingsBar() {
+  let events = "";
+  arrayUsersPendingEvents.forEach((element) => {
+    events += `
+    <li class="meet">
+      <div class="name">${element.title} ${element.day}/${element.month}/${element.year}</div>
+        <button class="buttonList" id="accept">Accept</button>
+        <button class="buttonList" id="decline">Decline</button>
+    </div>
+    <div class="info ">
+    <div>${element.fromPerson}</div>
+    <div>${element.day}/${element.month}/${element.year}</div>
+    <div>${element.from} - ${element.to}</div>
+    <div>${element.info}</div>
+  </li>`;
+  });
+  if (events === "") {
+    listMeets.innerHTML = `<h3 id="noMeets">No requested meets</h3>`;
+    return;
+  }
+
+  listMeets.innerHTML = events;
 }
 
-addListener();
+pendingMeetingsBar();

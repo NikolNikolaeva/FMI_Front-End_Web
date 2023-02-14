@@ -20,49 +20,45 @@ const firebaseConfig = {
   measurementId: "G-9SXHMKGV52",
 };
 
-var user = `${window.localStorage.user}Events`;
+var user = `${window.localStorage.user}`;
+var currUser = user;
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const userEventsDataRef = ref(database, user);
+const userEventsDataRef = ref(database, "Users/" + user + "/" + "Events/");
 const newDataRef = push(userEventsDataRef);
 
-function addDatesInfo(
-  day,
-  month,
-  year,
-  eventTitle,
-  timeFrom,
-  timeTo,
-  eventInfo
-) {
-  set(newDataRef, {
-    day: day,
-    month: month,
-    year: year,
-    title: eventTitle,
-    from: timeFrom,
-    to: timeTo,
-    info: eventInfo,
-  });
+//add event in calendar
+
+function addEvent(day, month, year, eventTitle, timeFrom, timeTo, eventInfo) {
+  set(
+    ref(
+      database,
+      "Users/" + user + "/" + "Events/" + `${day} ${month} ${year} ${timeFrom}`
+    ),
+    {
+      title: eventTitle,
+      to: timeTo,
+      info: eventInfo,
+    }
+  );
 }
 
-//-----------------------------------------------
-
+//read events
 var arrayUserEventsInfo = new Array();
 let eventsArr = new Array();
 
 onValue(
-  userEventsDataRef,
+  ref(database, "Users/" + user + "/" + "Events"),
   (snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      //const childKey = childSnapshot.key;
+      const childKey = childSnapshot.key;
       const childData = childSnapshot.val();
       arrayUserEventsInfo.push({
-        day: childData.day,
-        month: childData.month,
-        year: childData.year,
+        day: childKey.split(" ")[0],
+        month: childKey.split(" ")[1] - 1,
+        year: childKey.split(" ")[2],
         title: childData.title,
-        from: childData.from,
+        from: childKey.split(" ")[3] + " " + childKey.split(" ")[4],
         to: childData.to,
         info: childData.info,
       });
@@ -72,6 +68,55 @@ onValue(
     onlyOnce: true,
   }
 );
+
+const currArray = [...arrayUserEventsInfo];
+
+//comments
+const containerComments = document.querySelector(".containerComments");
+
+onValue(
+  ref(database, "Users/" + user + "/Comments"),
+  (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      const childKey = childSnapshot.key;
+      const childData = childSnapshot.val();
+      containerComments.innerHTML += `<li>${childData.person}: ${childData.comment}</li>`;
+    });
+  },
+  {
+    onlyOnce: true,
+  }
+);
+//friends list
+
+const personFr = ref(database, "Users/" + user + "/" + "Friends");
+
+const friendsCalendars = document.getElementById("frCalendar");
+
+onValue(
+  personFr,
+  (snapshot) => {
+    snapshot.forEach((childSnapshot) => {
+      //const childKey = childSnapshot.key;
+      const childData = childSnapshot.val();
+      friendsCalendars.innerHTML += `<option value="${childData.username}">${childData.username}</option>`;
+    });
+  },
+  {
+    onlyOnce: true,
+  }
+);
+
+function addComment(comment, calendar) {
+  set(
+    push(ref(database, "Users/" + calendar + "/Comments"), {
+      comment: comment,
+      person: currUser,
+    })
+  );
+}
+
+//-----------------------------------------------
 
 const settingsBtn = document.getElementById("settingsLogo");
 var flag = true;
@@ -106,6 +151,7 @@ const eventDay = document.querySelector(".event-day");
 const eventDate = document.querySelector(".event-date");
 const eventsContainer = document.querySelector(".events");
 const addEventsSubmit = document.querySelector(".add-event-btn");
+const timeList = document.querySelector(".timeList");
 
 let today = new Date();
 let activeday;
@@ -189,63 +235,6 @@ function gotoDate() {
   }
 }
 
-function updateEvents(date) {
-  let events = "";
-
-  arrayUserEventsInfo.forEach((event) => {
-    console.log(event);
-    if (date === event.day && month === event.month && year === event.year) {
-      events += `
-          <div class="event">
-             <div class="title">
-               <i class="fas fa-circle"></i>
-               <h3 class="event-title">${event.title}</h3>
-              </div>
-              <div class="event-time">
-                <span class="event-time">${event.from} - ${event.to}</span>
-              </div>
-              <div class="info">Info:
-              <div>
-              ${event.info}
-              </div>
-              </div>
-          </div>
-        `;
-    }
-  });
-
-  eventsArr.forEach((event) => {
-    if (
-      date === event.day &&
-      month + 1 === event.month &&
-      year === event.year
-    ) {
-      event.events.forEach((event) => {
-        events += `
-          <div class="event">
-          <div class="title">
-          <i class="fas fa-circle"></i>
-          <h3 class="event-title">${event.title}</h3>
-          </div>
-          <div class="event-time">
-          <span class="event-time">${event.time}</span>
-          </div>
-          </div>
-          `;
-      });
-    }
-  });
-
-  if (events === "") {
-    events = `
-    <div class="no-event">
-    <h3>No Events</h3>
-    </div>
-    `;
-  }
-  eventsContainer.innerHTML = events;
-}
-
 function initCalendar() {
   const firstDay = new Date(year, month, 1);
   const lastDay = new Date(year, month + 1, 0);
@@ -264,7 +253,7 @@ function initCalendar() {
   }
 
   for (let i = 1; i <= lastDate; i++) {
-    let event = false;
+    var event = false;
     eventsArr.forEach((eventObj) => {
       if (
         eventObj.day === i &&
@@ -275,7 +264,7 @@ function initCalendar() {
       }
     });
 
-    arrayUserEventsInfo.forEach((eventObj) => {
+    currArray.forEach((eventObj) => {
       if (
         eventObj.day === i &&
         eventObj.month === month &&
@@ -292,7 +281,7 @@ function initCalendar() {
     ) {
       activeday = i;
       getActiveDay(i);
-      updateEvents(activeday);
+      updateEvents(i);
 
       if (event) {
         days += `<div class="day today active event">${i}</div>`;
@@ -316,8 +305,105 @@ function initCalendar() {
   addListener();
 }
 
+function updateEvents(date) {
+  let events = "";
+  let timeLineEvents = [];
+
+  arrayUserEventsInfo.forEach((event) => {
+    if (date == event.day && month == event.month && year == event.year) {
+      events += `
+          <div class="event">
+             <div class="title">
+               <i class="fas fa-circle"></i>
+               <h3 class="event-title">${event.title}</h3>
+              </div>
+              <div class="event-time">
+                <span class="event-time">${event.from} - ${event.to}</span>
+              </div>
+          </div>
+        `;
+
+      timeLineEvents.push({
+        from: event.from,
+        li: `
+            <li>
+              <span></span>
+              <div class="title">${event.title}</div>
+              <div class="info">${event.info}</div>
+              <div class="time">
+                <span class="from">${event.from} </span>
+                <span class="to">${event.to} </span>
+              </div>
+            </li>
+      `,
+      });
+    }
+  });
+
+  eventsArr.forEach((event) => {
+    if (date == event.day && month + 1 == event.month && year == event.year) {
+      event.events.forEach((event) => {
+        events += `
+          <div class="event">
+          <div class="title">
+          <i class="fas fa-circle"></i>
+          <h3 class="event-title">${event.title}</h3>
+          </div>
+          <div class="event-time">
+          <span class="event-time">${event.time}</span>
+          </div>
+          </div>
+          `;
+
+        timeLineEvents.push({
+          from: event.from,
+          li: `
+            <li>
+                    <span></span>
+                    <div class="title">${event.title}</div>
+                    <div class="info">${event.info}</div>
+                    <div class="time">
+                      <span class="from">${
+                        event.time.split(" ")[0] +
+                        " " +
+                        event.time.split(" ")[1]
+                      } </span>
+                      <span class="to">${
+                        event.time.split(" ")[3] +
+                        " " +
+                        event.time.split(" ")[4]
+                      } </span>
+                    </div>
+                  </li>
+            `,
+        });
+      });
+    }
+  });
+
+  if (events == "") {
+    events = `
+    <div class="no-event">
+    <h3>No Events</h3>
+    </div>
+    `;
+  }
+  eventsContainer.innerHTML = events;
+
+  timeLineEvents.sort((a, b) => {
+    if (a.from > b.from) return -1;
+    if (a.from > b.from) return 1;
+    return 0;
+  });
+
+  timeList.innerHTML = "";
+  timeLineEvents.forEach((el) => {
+    timeList.innerHTML += el.li;
+  });
+}
+
 initCalendar();
-updateEvents(activeday);
+updateEvents(date);
 
 const addEventBtn = document.querySelector(".add-event");
 const addEventContainer = document.querySelector(".add-event-wrapper");
@@ -452,13 +538,11 @@ addEventsSubmit.addEventListener("click", () => {
 
   if (eventsArr.length > 0) {
     eventsArr.forEach((item) => {
-
       if (
         item.day === activeday &&
         item.month === month + 1 &&
         item.year === year
       ) {
-
         item.events.push(newEvent);
         eventAdded = true;
       }
@@ -474,8 +558,6 @@ addEventsSubmit.addEventListener("click", () => {
     });
   }
 
-  updateEvents(activeday);
-
   addEventContainer.classList.remove("active");
 
   addEventTitle.value = "";
@@ -487,8 +569,9 @@ addEventsSubmit.addEventListener("click", () => {
   if (!activeDayElement.classList.contains("event")) {
     activeDayElement.classList.add("event");
   }
+  updateEvents(activeday);
 
-  addDatesInfo(activeday, month, year, eventTitle, timeFrom, timeTo, eventInfo);
+  addEvent(activeday, month + 1, year, eventTitle, timeFrom, timeTo, eventInfo);
 });
 
 function convertTime(time) {
@@ -501,63 +584,34 @@ function convertTime(time) {
   return time;
 }
 
-eventsContainer.addEventListener("click", (e) => {
-  if (e.target.classList.contains("event")) {
-    const eventTitle = e.target.children[0].children[1].innerHTML;
-
-    eventsArr.forEach((event) => {
-      if (
-        event.day === activeday &&
-        event.month === month + 1 &&
-        event.year === year
-      ) {
-        event.events.forEach((item, index) => {
-          if (item.title === eventTitle) {
-            event.events.splice(index, 1);
-          }
-        });
-
-        if (event.events.length === 0) {
-          eventsArr.splice(eventsArr.indexOf(event), 1);
-
-          const activeDayElem = document.querySelector(".day.active");
-          if (activeDayElem.classList.contains("event")) {
-            activeDayElem.classList.remove("event");
-          }
-        }
-      }
-    });
-
-    updateEvents(activeday);
-  }
-});
+eventsContainer.addEventListener("click", () => {});
 
 let selectFrCalendar = document.getElementById("frCalendar");
 
-selectFrCalendar.addEventListener("change", (e) => {
-  if (selectFrCalendar.value !== "My Calendar") {
-    user = `${selectFrCalendar.value}Events`;
+selectFrCalendar.addEventListener("change", () => {
+  const value = selectFrCalendar.value;
+  if (value !== "My Calendar") {
+    user = value;
     addEventBtn.classList.remove("visible");
   } else {
-    user = `${window.localStorage.user}Events`;
+    user = window.localStorage.user;
     addEventBtn.classList.add("visible");
   }
   arrayUserEventsInfo = new Array();
   eventsArr = new Array();
-  let FrEventsDataRef = ref(database, user);
 
   onValue(
-    FrEventsDataRef,
+    ref(database, "Users/" + user + "/" + "Events"),
     (snapshot) => {
       snapshot.forEach((childSnapshot) => {
-        //const childKey = childSnapshot.key;
+        const childKey = childSnapshot.key;
         const childData = childSnapshot.val();
         arrayUserEventsInfo.push({
-          day: childData.day,
-          month: childData.month,
-          year: childData.year,
+          day: childKey.split(" ")[0],
+          month: childKey.split(" ")[1] - 1,
+          year: childKey.split(" ")[2],
           title: childData.title,
-          from: childData.from,
+          from: childKey.split(" ")[3] + " " + childKey.split(" ")[4],
           to: childData.to,
           info: childData.info,
         });
@@ -567,6 +621,50 @@ selectFrCalendar.addEventListener("change", (e) => {
       onlyOnce: true,
     }
   );
+  containerComments.innerHTML = "";
+
+  onValue(
+    ref(database, "Users/" + user + "/Comments"),
+    (snapshot) => {
+      snapshot.forEach((childSnapshot) => {
+        //const childKey = childSnapshot.key;
+        const childData = childSnapshot.val();
+        containerComments.innerHTML += `<li>${childData.person}:  ${childData.comment}</li>`;
+      });
+    },
+    {
+      onlyOnce: true,
+    }
+  );
 
   initCalendar();
+});
+
+const subTitleComments = document.querySelector(".subTitle");
+
+//eventsContainer.addEventListener("click", () => {
+//  eventsContainer.childNodes.forEach((event) => {
+///    event.addEventListener("click", () => {
+//      subTitleComments.innerHTML = event.querySelector(".title").
+//     querySelector(".event-title").innerHTML;
+// });
+// });
+//});
+
+const addCommentBtn = document.querySelector(".add-comment-btn");
+const comment = document.querySelector(".comment");
+
+addCommentBtn.addEventListener("click", () => {
+  let commentText=comment.value;
+  if (comment.value === "") {
+    alert("Write comment!");
+    return;
+  }
+  let value = selectFrCalendar.value;
+  if (value == "My Calendar") {
+    value = window.localStorage.user;
+  }
+  containerComments.innerHTML += `<li>${currUser}:  ${comment.value}</li>`;
+  comment.value = "";
+  addComment(commentText, value);
 });

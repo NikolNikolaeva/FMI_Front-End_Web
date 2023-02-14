@@ -10,11 +10,11 @@ form2.addEventListener("submit", (event) => {
 });
 
 //--------------------------------------------
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-app.js";
 import {
   getDatabase,
   ref,
-  push,
   set,
   onValue,
 } from "https://www.gstatic.com/firebasejs/9.16.0/firebase-database.js";
@@ -32,37 +32,46 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
-const dataRef = ref(database, "usersInfo");
-const newDataRef = push(dataRef);
+//const newDataRef = push(dataRef);
 
-function addUserData(name, email, password) {
-  set(newDataRef, {
-    username: name,
-    email: email,
-    password: password,
+
+//save user in database
+
+function saveUser(username,email,password){
+  set(ref(database, 'Users/' + username),{
+  email:email,
+  password:password,
   });
 }
 
-//-----------------------------------------------
 
+//read data users
 var arrayDataUsers = new Array();
 
 onValue(
-  dataRef,
+  ref(database, 'Users'),
   (snapshot) => {
     snapshot.forEach((childSnapshot) => {
-      //const childKey = childSnapshot.key;
+      const childKey = childSnapshot.key;
       const childData = childSnapshot.val();
       arrayDataUsers.push(
         new Object({
-          username: childData.username,
+          username: childKey,
           email: childData.email,
           password: childData.password,
         })
       );
     });
+  },
+  {
+    onlyOnce: true,
   }
 );
+
+console.log(arrayDataUsers);
+
+//-----------------------------------------------
+
 
 const signInBtn = document.getElementsByClassName("button")[0];
 const wrapperForm = document.querySelector("section");
@@ -79,6 +88,8 @@ signInBtn.addEventListener("click", () => {
     wrapperForm.classList.toggle("active");
   }
 });
+
+//Log in
 
 const username = document.getElementById("usernameLog");
 const passwordLog = document.getElementById("passLog");
@@ -104,6 +115,9 @@ buttonLogIn.addEventListener("click", () => {
   }
 });
 
+
+//Registration
+
 const name = document.getElementById("username");
 const email = document.getElementById("email");
 const password = document.getElementById("pass");
@@ -125,11 +139,21 @@ buttonRegister.addEventListener("click", () => {
     });
 
     if (available) {
-      addUserData(name.value, email.value, password.value);
+      //addUserData(name.value, email.value, password.value);
+      saveUser(name.value, email.value, password.value);
       alert("Successfully registered!");
+      arrayDataUsers.push(
+        new Object({
+          username: name.value,
+          email: email.value,
+          password:password.value,
+        }));
+      name.value="";
+      email.value="";
+      password.value="";
+      passConfirm.value="";
     }
   } else {
     alert("Repeat your password!");
-    return;
   }
 });

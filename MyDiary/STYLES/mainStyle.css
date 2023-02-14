@@ -329,8 +329,7 @@ body {
   width: 100%;
   padding: 10px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   background: linear-gradient(90deg, rgb(253, 174, 187), transparent);
   color: white;
@@ -341,6 +340,10 @@ body {
 .listMeets .meet:nth-child(even) {
   background: transparent;
   color: var(--mainPinkColor--);
+}
+
+#accept{
+  margin-left: 30px;
 }
 
 .listBtns {
@@ -374,14 +377,15 @@ body {
 }
 
 .info {
-  display: none;
+  display: flex;
+  visibility: hidden;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: white;
+  background: var(--mainPinkColor--);
   position: absolute;
-  color: var(--mainPinkColor--);
+  color: white;
   width: 100%;
   height: 100px;
   top: 3.4rem;
@@ -394,7 +398,7 @@ body {
 }
 
 .visible {
-  display: block;
+visibility: visible;
 }
 
 @media screen and (max-width: 700px) {
@@ -465,4 +469,8 @@ body {
   .pendingMeets {
     width: 100%;
   }
+}
+
+.vissible{
+  display: flex;
 }
